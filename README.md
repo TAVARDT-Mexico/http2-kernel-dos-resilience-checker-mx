@@ -1,59 +1,39 @@
-# Auditor de Resiliencia HTTP/2 & Caída de Kernel Linux - TAVARDT México
+# Hub de Hardening y Resiliencia DoS HTTP/2 y Kernel Linux
 
-> Auditoría de Resiliencia contra NoisyTCP, Rapid Reset (CVE-2023-44487) y Blindaje de Servidores Web
+Especificación técnica corporativa de ingeniería defensiva y blueprints de infraestructura para mitigar vectores de saturación HTTP/2 Rapid Reset (CVE-2023-44487) y NoisyTCP, hardening de kernel Linux (sysctl) y verificación CLI determinista local.
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Active-brightgreen)](https://tavardt-mexico.github.io/http2-kernel-dos-resilience-checker-mx/)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Security: CIS Linux](https://img.shields.io/badge/Security-CIS%20Linux%20%7C%20RFC%209113-red.svg)](https://www.cisecurity.org/)
+## Alcance Técnico del Repositorio
 
-## Visión General de Arquitectura y Resiliencia HTTP/2 & Kernel Linux
+Este repositorio proporciona plantillas de hardening probadas en producción y herramientas CLI deterministas:
 
-La estabilidad y resiliencia de servidores corporativos de alta demanda dependen de la sincronía entre la pila de transporte TCP del kernel Linux y los motores de multiplexación HTTP/2.
+1. **sysctl-hardening.conf:** Parámetros optimizados en `/proc/sys/net/ipv4` mitigando inundaciones SYN, ataques de timestamp NoisyTCP y agotamiento de sockets huérfanos.
+2. **nginx-http2-hardened.conf:** Configuración de proxy inverso NGINX blindada imponiendo límites estrictos de concurrencia (`http2_max_concurrent_streams 64`) y rate limiting riguroso de tramas RST_STREAM.
+3. **nftables-dos-protection.conf:** Reglas de filtrado de paquetes de Capa 4 descartando ráfagas anómalas TCP SYN y RST antes de la asignación de sockets en el kernel.
+4. **docker-compose-hardened.yml:** Arquitectura de contenedores aislados aplicando límites de recursos (memoria, CPU, ulimits) a proxies web perimetrales.
+5. **http2_kernel_dos_checker.py:** Utilidad CLI local determinista ejecutada con privilegios de sistema en el servidor para auditar directamente parámetros `/proc/sys` y verificar cumplimiento de RFCs.
 
-Dos clases críticas de amenazas afectan sistemas no protegidos:
-1. **Vulnerabilidad NoisyTCP en el Kernel Linux:** Paquetes TCP anómalos fuera de orden fuerzan una asignación desordenada de memoria en el kernel, provocando la caída de Nginx, Apache y SSH sin autenticación.
-2. **Abuso de Rapid Reset en HTTP/2 (CVE-2023-44487):** Ráfagas masivas de solicitudes canceladas de inmediato con tramas `RST_STREAM` saturan descriptores de archivos y capacidad de procesamiento.
+> [!NOTE]
+> La inspección activa del estado del kernel Linux y los parámetros de red requiere privilegios de sistema y debe ejecutarse directamente en el servidor mediante la herramienta CLI en Python. Las páginas web en entornos sandbox de navegador no pueden auditar parámetros del kernel host.
 
-Este repositorio proporciona una aplicación web interactiva que se ejecuta 100% en el navegador y un escáner CLI en Python con biblioteca estándar para auditar hosts locales y remotos.
+## Uso de la Herramienta CLI
 
-## Aplicación Web Interactiva
-
-Acceda a la herramienta online y audite su servidor en tiempo real:
-
-* [https://tavardt-mexico.github.io/http2-kernel-dos-resilience-checker-mx/](https://tavardt-mexico.github.io/http2-kernel-dos-resilience-checker-mx/)
-
-La aplicación evalúa 5 etapas de seguridad, calcula el índice de resiliencia (0 a 100), genera diagnósticos de riesgo y proporciona configuraciones defensivas listas para producción.
-
-## Utilización del Escáner CLI (Python)
-
-El repositorio incluye el script `http2_kernel_dos_checker.py`, desarrollado exclusivamente con la biblioteca estándar de Python:
+Ejecute el script de auditoría determinista directamente en el host del servidor:
 
 ```bash
-# Auditar parametros locales de kernel contra NoisyTCP
-python3 http2_kernel_dos_checker.py --kernel
+# 1. Descargar script de auditoria
+curl -sO https://raw.githubusercontent.com/TAVARDT-Mexico/http2-kernel-dos-resilience-checker-mx/main/http2_kernel_dos_checker.py
 
-# Auditar servidor remoto (negociacion ALPN h2, TLS y cabeceras)
-python3 http2_kernel_dos_checker.py --host su-servidor.com --port 443
+# 2. Inspeccionar parametros locales del kernel Linux
+sudo python3 http2_kernel_dos_checker.py -kernel
 
-# Ejecutar auditoria en formato JSON para CI/CD
-python3 http2_kernel_dos_checker.py --host su-servidor.com --json
+# 3. Exportar resultados en formato JSON
+sudo python3 http2_kernel_dos_checker.py -kernel -json
 ```
 
-## Controles Arquitectónicos y Mitigaciones Defensivas
+## Gobernanza y Soberanía
 
-* **Kernel Linux (/etc/sysctl.conf):** Configuración de `net.ipv4.tcp_syncookies = 1`, desactivación de `net.ipv4.tcp_timestamps = 0` para contener NoisyTCP, ajuste de buffers (`tcp_rmem`, `tcp_wmem`) y `somaxconn = 4096`.
-* **Nginx (nginx.conf):** Supresión de firmas (`server_tokens off`), límite de streams simultáneos (`http2_max_concurrent_streams 100`) y zonas de tasa (`limit_req_zone`) contra abusos de `RST_STREAM`.
-* **Apache HTTP Server (httpd.conf):** Ocultación de cabeceras (`ServerTokens Prod`, `ServerSignature Off`), restricción de multiplexación via `mod_http2` (`H2MaxSessionStreams 100`) y timeouts con `mod_reqtimeout`.
-* **Perímetro de Borde:** Terminación TLS gestionada con Cloudflare WAF y aislamiento total de la IP de origen.
+* **Organización:** TAVARDT-Mexico
+* **Jurisdicción:** Mexico
+* **Cumplimiento de Estándares:** RFC 7540, RFC 9113, CVE-2023-44487, Arquitectura Zero Trust
 
-## Portales Oficiales
-
-* **Portal Corporativo TAVARDT México:** [https://ag.tavardt.com/mx/](https://ag.tavardt.com/mx/)
-* **Servicios de Ciberseguridad:** [https://ag.tavardt.com/mx/ciberseguridad/](https://ag.tavardt.com/mx/ciberseguridad/)
-* **Hub de Herramientas:** [https://tools.tavardt.com/mx/](https://tools.tavardt.com/mx/)
-* **Organización GitHub:** [https://github.com/TAVARDT-Mexico](https://github.com/TAVARDT-Mexico)
-
-## Licencia
-
-Distribuido bajo licencia MIT. Consulte el archivo `LICENSE` para más información.
+Desarrollado por la División de Ciberseguridad e Infraestructura de **TAVARDT Mexico**. Todos los derechos reservados.
