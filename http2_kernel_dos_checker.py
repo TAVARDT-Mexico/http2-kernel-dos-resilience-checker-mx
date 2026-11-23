@@ -152,7 +152,7 @@ def main():
 
     results = {
         "version": VERSION,
-        "auditor": "TAVARDT Brasil",
+        "auditor": "TAVARDT México",
         "documentation": "https://ag.tavardt.com/mx/ciberseguridad/",
         "web_tool": "https://tavardt-brasil.github.io/http2-kernel-dos-resilience-checker-br/"
     }
