@@ -10,12 +10,12 @@
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5D7F8Z48');</script>
+  })(window,document,'script','dataLayer','GTM-KMZZVMQ5');</script>
   
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hub de Arquitectura Defensiva y Hardening contra DoS HTTP/2 y NoisyTCP | TAVARDT Mexico</title>
+  <title>Hub de Arquitectura Defensiva y Hardening contra DoS HTTP/2 y NoisyTCP | TAVARDT Espana</title>
   <meta name="description" content="Especificación técnica corporativa de mitigación contra Rapid Reset (CVE-2023-44487), control de saturación NoisyTCP, directivas de kernel Linux (sysctl), configuraciones NGINX blindadas y herramientas CLI deterministas.">
   <link rel="icon" type="image/x-icon" href="./favicon.ico">
   <link rel="shortcut icon" href="./favicon.ico">
@@ -25,19 +25,19 @@
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="TAVARDT Mexico">
+  <meta property="og:site_name" content="TAVARDT Espana">
   <meta property="og:title" content="Hub de Arquitectura Defensiva y Hardening contra DoS HTTP/2 y NoisyTCP | TAVARDT">
   <meta property="og:description" content="Especificaciones técnicas corporativas y blueprints de protección de kernel Linux, NGINX y firewall contra fallos de DoS en HTTP/2.">
   <meta property="og:url" content="https://tavardt-mexico.github.io/http2-kernel-dos-resilience-checker-mx/">
   <meta property="og:image" content="https://tavardt-mexico.github.io/http2-kernel-dos-resilience-checker-mx/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="TAVARDT Mexico">
+  <meta property="og:image:alt" content="TAVARDT Espana">
   <meta property="og:locale" content="pt_BR">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@tavardt">
-  <meta name="twitter:title" content="Hub de Hardening HTTP/2 y Kernel Linux | TAVARDT Mexico">
+  <meta name="twitter:title" content="Hub de Hardening HTTP/2 y Kernel Linux | TAVARDT Espana">
   <meta name="twitter:description" content="Mitigación de sobrecarga HTTP/2 Rapid Reset y NoisyTCP con blueprints de infraestructura y CLI determinista.">
   <meta name="twitter:image" content="https://tavardt-mexico.github.io/http2-kernel-dos-resilience-checker-mx/og-image.jpg">
 
@@ -1002,7 +1002,7 @@
   </style>
 </head>
 <body>
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5D7F8Z48"
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KMZZVMQ5"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <header class="tavardt-header">
@@ -1466,14 +1466,14 @@ if __name__ == "__main__":
       if (sel) sel.value = tab;
       const box = document.getElementById('code-box');
       if (box && codeTemplates[tab]) {
-        box.innerText = codeTemplates[tab];
+        box.textContent = codeTemplates[tab];
       }
     }
 
     function copyCode() {
       const code = codeTemplates[activeTab];
       if (!code) return;
-      navigator.clipboard.writeText(code).then(() => {
+      navigator.clipboard.writeText(code).catch(() => {}).then(() => {
         const btn = document.getElementById('btn-copy-code');
         if (btn) {
           const orig = btn.innerText;
@@ -1504,7 +1504,7 @@ if __name__ == "__main__":
       const codeEl = document.getElementById('cli-terminal-code');
       if (!codeEl) return;
       const code = codeEl.innerText;
-      navigator.clipboard.writeText(code).then(() => {
+      navigator.clipboard.writeText(code).catch(() => {}).then(() => {
         const btn = document.getElementById('btn-copy-cli');
         if (!btn) return;
         const textSpan = btn.querySelector('.btn-copy-cli-text');
