@@ -11,9 +11,6 @@ Desarrollado y mantenido por la división de ingeniería de seguridad e infraest
 
 ***
 
-
-***
-
 ## Demostración Online y Hub de Arquitectura Defensiva
 
 Puede consultar la especificación tecnica corporativa, las pruebas de diagnóstico arquitectónico y los blueprints de mitigación directamente desde el navegador:
@@ -50,6 +47,14 @@ sudo python3 http2_kernel_dos_checker.py -kernel
 # 3. Exportar diagnóstico en formato estructurado JSON
 sudo python3 http2_kernel_dos_checker.py -kernel -json
 ```
+
+***
+
+## Enlaces Útiles
+
+* **Portal Corporativo:** https://ag.tavardt.com/mx/
+* **Suite de Diagnósticos:** https://tools.tavardt.com/mx/
+* **Contacto Técnico:** https://ag.tavardt.com/mx/contacto/
 
 ***
 
