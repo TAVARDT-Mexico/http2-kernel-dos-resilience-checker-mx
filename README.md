@@ -42,7 +42,7 @@ Para ejecutar la inspección determinista directamente en el host del servidor L
 
 ```bash
 # 1. Descargar script de auditoría desde el repositorio oficial
-curl -sO https://raw.githubusercontent.com/TAVARDT-Mexico/http2-kernel-dos-resilience-checker-mx/main/http2_kernel_dos_checker.py
+curl -sO https://raw.githubusercontent.com/TAVARDT/http2-kernel-dos-resilience-checker-mx/main/http2_kernel_dos_checker.py
 
 # 2. Inspeccionar parámetros locales del kernel Linux
 sudo python3 http2_kernel_dos_checker.py -kernel
