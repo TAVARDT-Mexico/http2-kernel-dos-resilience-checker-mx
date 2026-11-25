@@ -4,19 +4,17 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![RFC 7540](https://img.shields.io/badge/RFC-7540-blue.svg)](https://datatracker.ietf.org/doc/html/rfc7540)
 [![RFC 9113](https://img.shields.io/badge/RFC-9113-blue.svg)](https://datatracker.ietf.org/doc/html/rfc9113)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **Hub de Arquitectura Defensiva y Mitigación contra DoS en HTTP/2 (Rapid Reset CVE-2023-44487) y Kernel Linux**
 
-Desarrollado y mantenido por la división de ingeniería de seguridad e infraestructura de **TAVARDT**.
-
 ***
 
-## Demostración Online y Hub de Arquitectura Defensiva
+## Demostración Online
 
 Puede consultar la especificación tecnica corporativa, las pruebas de diagnóstico arquitectónico y los blueprints de mitigación directamente desde el navegador:
 
 * **[Aplicación Web Oficial en GitHub Pages](https://tavardt-mexico.github.io/http2-kernel-dos-resilience-checker-mx/)**
-* **Central de Herramientas TAVARDT**
 
 > [!NOTE]
 > **Alcance de Ejecución Técnica:** Este hub web proporciona especificaciónes de arquitectura defensiva y blueprints de configuración. Las auditorías activas de caída de kernel y resiliencia TCP requieren privilegios de sistema (root) y ejecución directa en el servidor host mediante la herramienta CLI oficial (`http2_kernel_dos_checker.py`). Las páginas web en entornos sandbox de navegador no pueden auditar parámetros internos del kernel.
