@@ -1116,7 +1116,53 @@ python http2_kernel_dos_checker.py</div>
 </section>
 <section class="faq-section">
 <h2 class="faq-title">Preguntas Frecuentes sobre Mitigación de DoS en HTTP/2 y Kernel Linux</h2>
-<div class="faq-list"><div class="faq-item"><div class="faq-question">¿Por qué las auditorías activas de sobrecarga HTTP/2 y agotamiento de kernel no deben ejecutarse a través del navegador?<span class="faq-toggle">+</span></div><div class="faq-answer">Las auditorías de agotamiento de pila TCP y kernel requieren sockets crudos (raw sockets) e inspección del sistema de archivos /proc/sys del host, capacidades no disponibles en el entorno aislado (sandbox) del navegador web. Por ello, TAVARDT proporciona blueprints validados de configuración y un script CLI determinista en Python para su ejecución local en el servidor.</div></div><div class="faq-item"><div class="faq-question">¿Cómo actúa el ataque HTTP/2 Rapid Reset (CVE-2023-44487) sobre los servidores web?<span class="faq-toggle">+</span></div><div class="faq-answer">El ataque explota el mecanismo de multiplexación del protocolo HTTP/2 enviando sucesivas peticiones HEADERS inmediatamente seguidas de tramas RST_STREAM. El servidor web asigna recursos para procesar cada petición antes de descartarla, generando una sobrecarga masiva de CPU y memoria sin alcanzar el límite de conexiones concurrentes.</div></div><div class="faq-item"><div class="faq-question">¿Qué parámetros del kernel Linux (sysctl) son fundamentales para mitigar la saturación TCP?<span class="faq-toggle">+</span></div><div class="faq-answer">Destacan net.ipv4.tcp_syncookies = 1 (protección contra SYN flood), net.ipv4.tcp_max_syn_backlog = 8192 (cola de conexiones pendientes), net.ipv4.tcp_fin_timeout = 15 (liberación rápida de sockets huérfanos) y net.ipv4.tcp_tw_reuse = 1 (reutilización segura de sockets en TIME_WAIT).</div></div><div class="faq-item"><div class="faq-question">¿Cuál es la diferencia entre mitigar ataques DoS en la capa de aplicación (L7) frente a la capa de red (L4)?<span class="faq-toggle">+</span></div><div class="faq-answer">La capa L4 (firewall nftables) filtra paquetes SYN abusivos y conexiones anómalas antes de que alcancen el espacio de usuario, consumiendo un mínimo de CPU. La capa L7 (NGINX/proxy) inspecciona flujos HTTP/2, limitando peticiones y tramas RST_STREAM. Una arquitectura defensiva robusta exige la actuación coordinada de ambas capas.</div></div><div class="faq-item"><div class="faq-question">¿Cómo implementar las directivas de mitigación sin interrumpir el tráfico legítimo de los usuarios?<span class="faq-toggle">+</span></div><div class="faq-answer">Se recomienda aplicar los parámetros en entornos de staging o mediante despliegues canary, monitorizando métricas de latencia y contadores de descarte con nstat y dmesg. Las directivas de NGINX deben mantener un margen suficiente (p. ej., de 64 a 128 streams concurrentes) para atender a clientes legítimos con alto rendimiento.</div></div></div>
+<div class="faq-list">
+  <div class="faq-item">
+    <button class="faq-btn" onclick="toggleFaq(this)" type="button">
+      <span>¿Por qué las auditorías activas de sobrecarga HTTP/2 y agotamiento de kernel no deben ejecutarse a través del navegador?</span>
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-body">
+      Las auditorías de agotamiento de pila TCP y kernel requieren sockets crudos (raw sockets) e inspección del sistema de archivos /proc/sys del host, capacidades no disponibles en el entorno aislado (sandbox) del navegador web. Por ello, TAVARDT proporciona blueprints validados de configuración y un script CLI determinista en Python para su ejecución local en el servidor.
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-btn" onclick="toggleFaq(this)" type="button">
+      <span>¿Cómo actúa el ataque HTTP/2 Rapid Reset (CVE-2023-44487) sobre los servidores web?</span>
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-body">
+      El ataque explota el mecanismo de multiplexación del protocolo HTTP/2 enviando sucesivas peticiones HEADERS inmediatamente seguidas de tramas RST_STREAM. El servidor web asigna recursos para procesar cada petición antes de descartarla, generando una sobrecarga masiva de CPU y memoria sin alcanzar el límite de conexiones concurrentes.
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-btn" onclick="toggleFaq(this)" type="button">
+      <span>¿Qué parámetros del kernel Linux (sysctl) son fundamentales para mitigar la saturación TCP?</span>
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-body">
+      Destacan net.ipv4.tcp_syncookies = 1 (protección contra SYN flood), net.ipv4.tcp_max_syn_backlog = 8192 (cola de conexiones pendientes), net.ipv4.tcp_fin_timeout = 15 (liberación rápida de sockets huérfanos) y net.ipv4.tcp_tw_reuse = 1 (reutilización segura de sockets en TIME_WAIT).
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-btn" onclick="toggleFaq(this)" type="button">
+      <span>¿Cuál es la diferencia entre mitigar ataques DoS en la capa de aplicación (L7) frente a la capa de red (L4)?</span>
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-body">
+      La capa L4 (firewall nftables) filtra paquetes SYN abusivos y conexiones anómalas antes de que alcancen el espacio de usuario, consumiendo un mínimo de CPU. La capa L7 (NGINX/proxy) inspecciona flujos HTTP/2, limitando peticiones y tramas RST_STREAM. Una arquitectura defensiva robusta exige la actuación coordinada de ambas capas.
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-btn" onclick="toggleFaq(this)" type="button">
+      <span>¿Cómo implementar las directivas de mitigación sin interrumpir el tráfico legítimo de los usuarios?</span>
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-body">
+      Se recomienda aplicar los parámetros en entornos de staging o mediante despliegues canary, monitorizando métricas de latencia y contadores de descarte con nstat y dmesg. Las directivas de NGINX deben mantener un margen suficiente (p. ej., de 64 a 128 streams concurrentes) para atender a clientes legítimos con alto rendimiento.
+    </div>
+  </div>
+</div>
 </section>
 
 <div class="cta-card">
